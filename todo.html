@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Todo App</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        h1 {
+            text-align: center;
+        }
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+        li {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin: 5px 0;
+            padding: 10px;
+        }
+        .completed {
+            text-decoration: line-through;
+        }
+        .delete-button {
+            background-color: #ff5555;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 5px 10px;
+            cursor: pointer;
+        }
+        .edit-button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 5px 10px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Todo App</h1>
+        <input type="text" id="task" placeholder="Add a task">
+        <button onclick="addTask()">Add</button>
+        <h2>Pending Tasks:</h2>
+        <ul id="pendingTasks"></ul>
+        <h2>Completed Tasks:</h2>
+        <ul id="completedTasks"></ul>
+    </div>
+
+    <script>
+        function addTask() {
+            const taskText = document.getElementById("task").value;
+            if (taskText.trim() === "") {
+                alert("Task cannot be empty");
+                return;
+            }
+
+            const taskItem = document.createElement("li");
+            taskItem.innerHTML = `
+                <span>${taskText}</span>
+                <button class="edit-button" onclick="editTask(this)">Edit</button>
+                <button class="delete-button" onclick="deleteTask(this)">Delete</button>
+            `;
+
+            taskItem.onclick = function() {
+                toggleTask(this);
+            };
+
+            document.getElementById("pendingTasks").appendChild(taskItem);
+            document.getElementById("task").value = "";
+        }
+
+        function toggleTask(task) {
+            if (task.classList.contains("completed")) {
+                task.classList.remove("completed");
+                document.getElementById("pendingTasks").appendChild(task);
+            } else {
+                task.classList.add("completed");
+                document.getElementById("completedTasks").appendChild(task);
+            }
+        }
+
+        function editTask(editButton) {
+            const taskText = editButton.parentNode.querySelector("span").innerText;
+            const newTaskText = prompt("Edit task:", taskText);
+            if (newTaskText === null) {
+                return;
+            }
+            editButton.parentNode.querySelector("span").innerText = newTaskText;
+        }
+
+        function deleteTask(deleteButton) {
+            deleteButton.parentNode.remove();
+        }
+    </script>
+</body>
+</html>
+ 
